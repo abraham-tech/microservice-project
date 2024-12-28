@@ -5,13 +5,23 @@ import jakarta.persistence.*;
 @Entity
 @Table(name="employees")
 public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    @Column(unique=true, nullable=false)
+    private String email;
+    private String departmentCode;
+
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String email) {
+    public Employee(String firstName, String lastName, String email, String departmentCode) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.departmentCode = departmentCode;
     }
 
     public String getFirstName() {
@@ -37,12 +47,12 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String firstName;
-    private String lastName;
-    @Column(unique=true, nullable=false)
-    private String email;
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
+    }
+
 }

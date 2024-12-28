@@ -4,12 +4,16 @@ import lombok.*;
 
 @Setter
 @Getter
-@NoArgsConstructor
+//@NoArgsConstructor
 //@AllArgsConstructor
 
 public class DepartmentDto {
     private String departmentName;
     private String departmentCode;
+
+    public DepartmentDto() {
+    }
+
     private String departmentDescription;
 
 

@@ -5,40 +5,29 @@ import net.javaguides.departmentservice.dto.DepartmentDto;
 import net.javaguides.departmentservice.entity.Department;
 import net.javaguides.departmentservice.repository.DepartmentRepository;
 import net.javaguides.departmentservice.service.DepartmentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
+    private final ModelMapper modelMapper;
 
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository, ModelMapper modelMapper) {
         this.departmentRepository = departmentRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public DepartmentDto saveDepartment(DepartmentDto departmentDto) {
-        // convert departmentDto to department entity
-        Department department = new Department(
-                departmentDto.getDepartmentName(),
-                departmentDto.getDepartmentCode(),
-                departmentDto.getDepartmentDescription()
-        );
+        Department department = modelMapper.map(departmentDto, Department.class);
         Department savedDepartment =  departmentRepository.save(department);
-
-        return new DepartmentDto(
-                savedDepartment.getDepartmentName(),
-                savedDepartment.getDepartmentCode(),
-                savedDepartment.getDepartmentDescription()
-        );
+        return modelMapper.map(savedDepartment, DepartmentDto.class);
     }
 
     @Override
     public DepartmentDto getDepartmentByDepartmentCode(String departmentCode) {
         Department department = departmentRepository.findByDepartmentCode(departmentCode);
-        return new DepartmentDto(
-                department.getDepartmentName(),
-                department.getDepartmentCode(),
-                department.getDepartmentDescription()
-        );
+        return modelMapper.map(department, DepartmentDto.class);
     }
 }

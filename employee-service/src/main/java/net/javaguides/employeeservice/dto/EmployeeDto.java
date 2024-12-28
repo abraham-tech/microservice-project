@@ -5,6 +5,18 @@ public class EmployeeDto {
     private String firstName;
     private String lastName;
     private String email;
+    private String departmentCode;
+
+    public EmployeeDto() {
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -30,10 +42,11 @@ public class EmployeeDto {
         this.email = email;
     }
 
-    public EmployeeDto(String firstName, String lastName, String email) {
+    public EmployeeDto(String firstName, String lastName, String email, String departmentCode) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.departmentCode = departmentCode;
     }
 
 }

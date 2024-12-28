@@ -3,6 +3,7 @@ package net.javaguides.employeeservice.service.impl;
 
 import net.javaguides.employeeservice.dto.EmployeeDto;
 import net.javaguides.employeeservice.entity.Employee;
+import net.javaguides.employeeservice.exception.EmployeeNotFoundException;
 import net.javaguides.employeeservice.repository.EmployeeRepository;
 import net.javaguides.employeeservice.service.EmployeeService;
 import org.modelmapper.ModelMapper;
@@ -28,7 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto getEmployeeById(Long id) {
-        Employee employee = employeeRepository.findById(id).orElse(null);
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(()-> new EmployeeNotFoundException("Employee with ID: " + id + " not found"));
 
         return new EmployeeDto(
                     employee.getFirstName(), employee.getLastName(), employee.getEmail()

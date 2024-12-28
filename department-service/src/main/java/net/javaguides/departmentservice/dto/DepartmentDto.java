@@ -1,31 +1,24 @@
-package net.javaguides.departmentservice.entity;
+package net.javaguides.departmentservice.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 //@AllArgsConstructor
-@Table(name="departments")
-public class Department {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+public class DepartmentDto {
     private String departmentName;
     private String departmentCode;
     private String departmentDescription;
 
-    public Department(String departmentName, String departmentCode, String departmentDescription) {
+
+    public DepartmentDto(String departmentName, String departmentCode, String departmentDescription) {
         this.departmentName = departmentName;
         this.departmentCode = departmentCode;
         this.departmentDescription = departmentDescription;
     }
 
-    public Long getId() {
-        return id;
-    }
 
     public String getDepartmentName() {
         return departmentName;

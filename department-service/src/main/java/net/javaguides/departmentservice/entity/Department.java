@@ -16,7 +16,9 @@ public class Department {
     private String departmentName;
     private String departmentCode;
     private String departmentDescription;
-
+    // Default constructor
+    public Department() {
+    }
     public Department(String departmentName, String departmentCode, String departmentDescription) {
         this.departmentName = departmentName;
         this.departmentCode = departmentCode;

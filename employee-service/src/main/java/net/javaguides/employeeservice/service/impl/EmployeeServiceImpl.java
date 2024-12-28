@@ -12,17 +12,20 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final ModelMapper modelMapper;
     private EmployeeRepository employeeRepository;
-    private RestTemplate restTemplate;
+//    private RestTemplate restTemplate;
+    private WebClient webClient;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, ModelMapper modelMapper, RestTemplate restTemplate) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, ModelMapper modelMapper, WebClient webClient) {
         this.employeeRepository = employeeRepository;
         this.modelMapper = modelMapper;
-        this.restTemplate = restTemplate;
+        this.webClient = webClient;
+//        this.restTemplate = restTemplate;
     }
 
     @Override
@@ -38,8 +41,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(()-> new EmployeeNotFoundException("Employee with ID: " + id + " not found"));
 
-        ResponseEntity<DepartmentDto> responseEntity =  restTemplate.getForEntity("http://localhost:8080/api/departments/" + employee.getDepartmentCode(), DepartmentDto.class);
-        DepartmentDto departmentDto = responseEntity.getBody();
+//        ResponseEntity<DepartmentDto> responseEntity =  restTemplate.getForEntity("http://localhost:8080/api/departments/" + employee.getDepartmentCode(), DepartmentDto.class);
+//        DepartmentDto departmentDto = responseEntity.getBody();
+        DepartmentDto departmentDto = webClient.get()
+                .uri("http://localhost:8080/api/departments/" + employee.getDepartmentCode())
+                .retrieve()
+                .bodyToMono(DepartmentDto.class)
+                .block();
+
 
         return new APIResponseDto(modelMapper.map(employee, EmployeeDto.class), departmentDto);
 

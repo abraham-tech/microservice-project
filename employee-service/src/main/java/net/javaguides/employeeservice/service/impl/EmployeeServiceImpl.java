@@ -7,6 +7,7 @@ import net.javaguides.employeeservice.dto.EmployeeDto;
 import net.javaguides.employeeservice.entity.Employee;
 import net.javaguides.employeeservice.exception.EmployeeNotFoundException;
 import net.javaguides.employeeservice.repository.EmployeeRepository;
+import net.javaguides.employeeservice.service.APIClient;
 import net.javaguides.employeeservice.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class EmployeeServiceImpl implements EmployeeService {
     private final ModelMapper modelMapper;
     private EmployeeRepository employeeRepository;
+    private APIClient apiClient;
 //    private RestTemplate restTemplate;
-    private WebClient webClient;
+//    private WebClient webClient;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, ModelMapper modelMapper, WebClient webClient) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, ModelMapper modelMapper, APIClient apiClient) {
         this.employeeRepository = employeeRepository;
         this.modelMapper = modelMapper;
-        this.webClient = webClient;
+        this.apiClient = apiClient;
+//        this.webClient = webClient;
 //        this.restTemplate = restTemplate;
     }
 
@@ -43,12 +46,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 //        ResponseEntity<DepartmentDto> responseEntity =  restTemplate.getForEntity("http://localhost:8080/api/departments/" + employee.getDepartmentCode(), DepartmentDto.class);
 //        DepartmentDto departmentDto = responseEntity.getBody();
-        DepartmentDto departmentDto = webClient.get()
-                .uri("http://localhost:8080/api/departments/" + employee.getDepartmentCode())
-                .retrieve()
-                .bodyToMono(DepartmentDto.class)
-                .block();
 
+//        DepartmentDto departmentDto = webClient.get()
+//                .uri("http://localhost:8080/api/departments/" + employee.getDepartmentCode())
+//                .retrieve()
+//                .bodyToMono(DepartmentDto.class)
+//                .block();
+
+        DepartmentDto departmentDto = apiClient.getDepartmentByDepartmentCode(employee.getDepartmentCode());
 
         return new APIResponseDto(modelMapper.map(employee, EmployeeDto.class), departmentDto);
 

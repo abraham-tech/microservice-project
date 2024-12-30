@@ -3,35 +3,50 @@ package net.javaguides.departmentservice.service.impl;
 import lombok.AllArgsConstructor;
 import net.javaguides.departmentservice.dto.DepartmentDto;
 import net.javaguides.departmentservice.entity.Department;
-import net.javaguides.departmentservice.exception.DepartmentNotFoundException;
 import net.javaguides.departmentservice.repository.DepartmentRepository;
 import net.javaguides.departmentservice.service.DepartmentService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
-    private final DepartmentRepository departmentRepository;
-    private final ModelMapper modelMapper;
 
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository, ModelMapper modelMapper) {
-        this.departmentRepository = departmentRepository;
-        this.modelMapper = modelMapper;
-    }
+    private DepartmentRepository departmentRepository;
 
     @Override
     public DepartmentDto saveDepartment(DepartmentDto departmentDto) {
-        Department department = modelMapper.map(departmentDto, Department.class);
-        Department savedDepartment =  departmentRepository.save(department);
-        return modelMapper.map(savedDepartment, DepartmentDto.class);
+
+        // convert department dto to department jpa entity
+        Department department = new Department(
+                departmentDto.getId(),
+                departmentDto.getDepartmentName(),
+                departmentDto.getDepartmentDescription(),
+                departmentDto.getDepartmentCode()
+        );
+
+        Department savedDepartment = departmentRepository.save(department);
+
+        DepartmentDto savedDepartmentDto = new DepartmentDto(
+                savedDepartment.getId(),
+                savedDepartment.getDepartmentName(),
+                savedDepartment.getDepartmentDescription(),
+                savedDepartment.getDepartmentCode()
+        );
+
+        return savedDepartmentDto;
     }
 
     @Override
-    public DepartmentDto getDepartmentByDepartmentCode(String departmentCode) {
+    public DepartmentDto getDepartmentByCode(String departmentCode) {
+
         Department department = departmentRepository.findByDepartmentCode(departmentCode);
-        if (department == null) {
-            throw new DepartmentNotFoundException("Department with department code: " + departmentCode + " Not found");
-        }
-        return modelMapper.map(department, DepartmentDto.class);
+
+        DepartmentDto departmentDto = new DepartmentDto(
+                department.getId(),
+                department.getDepartmentName(),
+                department.getDepartmentDescription(),
+                department.getDepartmentCode()
+        );
+        return departmentDto;
     }
 }

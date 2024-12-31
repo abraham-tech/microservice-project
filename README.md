@@ -210,5 +210,5 @@ Please ensure your code follows the project's coding standards and includes rele
 This project is licensed under the MIT License.
 
 ## Contact
-- Name - abrahammeja3@gmail.com
+- Abraham Meja - abrahammeja3@gmail.com
 - GitHub: [https://github.com/abraham-tech](https://github.com/abraham-tech)

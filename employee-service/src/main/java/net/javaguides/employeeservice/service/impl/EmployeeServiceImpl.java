@@ -1,6 +1,7 @@
 package net.javaguides.employeeservice.service.impl;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import net.javaguides.employeeservice.dto.APIResponseDto;
 import net.javaguides.employeeservice.dto.DepartmentDto;
@@ -48,8 +49,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return savedEmployeeDto;
     }
 
-    @CircuitBreaker(name="${spring.application.name}", fallbackMethod = "getDefaultDepartment")
+//    @CircuitBreaker(name="${spring.application.name}", fallbackMethod = "getDefaultDepartment")
     @Override
+    @Retry(name ="${spring.application.name}", fallbackMethod = "getDefaultDepartment")
     public APIResponseDto getEmployeeById(Long employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).get();

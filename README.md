@@ -161,7 +161,8 @@ spring-book-microservice/
 │   ├── src/
 │   ├── pom.xml
 ├── README.md
-└── .gitignore ```
+└── .gitignore
+```
 
 
 ## API Gateway

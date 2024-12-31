@@ -54,7 +54,7 @@ The project follows a microservices architecture, where each service is responsi
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/yourusername/spring-book-microservice.git
+    git clone https://github.com/abraham-tech/spring-book-microservice.git
     cd spring-book-microservice
     ```
 
@@ -161,7 +161,7 @@ spring-book-microservice/
 │   ├── src/
 │   ├── pom.xml
 ├── README.md
-└── .gitignore
+└── .gitignore ```
 
 
 ## API Gateway

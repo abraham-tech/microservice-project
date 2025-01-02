@@ -1,9 +1,5 @@
 package net.javaguides.organizationservice.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +17,4 @@ public class OrganizationDto {
     private String organizationName;
     private String organizationDescription;
     private String organizationCode;
-    private LocalDateTime createDate;
 }

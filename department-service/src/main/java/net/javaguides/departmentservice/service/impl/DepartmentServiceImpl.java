@@ -5,6 +5,7 @@ import net.javaguides.departmentservice.dto.DepartmentDto;
 import net.javaguides.departmentservice.entity.Department;
 import net.javaguides.departmentservice.repository.DepartmentRepository;
 import net.javaguides.departmentservice.service.DepartmentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private DepartmentRepository departmentRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public DepartmentDto saveDepartment(DepartmentDto departmentDto) {
@@ -25,28 +27,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         );
 
         Department savedDepartment = departmentRepository.save(department);
-
-        DepartmentDto savedDepartmentDto = new DepartmentDto(
-                savedDepartment.getId(),
-                savedDepartment.getDepartmentName(),
-                savedDepartment.getDepartmentDescription(),
-                savedDepartment.getDepartmentCode()
-        );
-
-        return savedDepartmentDto;
+        return modelMapper.map(savedDepartment, DepartmentDto.class);
     }
 
     @Override
     public DepartmentDto getDepartmentByCode(String departmentCode) {
 
         Department department = departmentRepository.findByDepartmentCode(departmentCode);
-
-        DepartmentDto departmentDto = new DepartmentDto(
-                department.getId(),
-                department.getDepartmentName(),
-                department.getDepartmentDescription(),
-                department.getDepartmentCode()
-        );
-        return departmentDto;
+        return modelMapper.map(department, DepartmentDto.class);
     }
 }

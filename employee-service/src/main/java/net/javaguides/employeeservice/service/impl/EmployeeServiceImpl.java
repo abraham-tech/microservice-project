@@ -10,6 +10,7 @@ import net.javaguides.employeeservice.entity.Employee;
 import net.javaguides.employeeservice.repository.EmployeeRepository;
 import net.javaguides.employeeservice.service.APIClient;
 import net.javaguides.employeeservice.service.EmployeeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,6 +21,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
+    private final ModelMapper modelMapper;
 
 //    private RestTemplate restTemplate;
     private WebClient webClient;
@@ -38,15 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee saveDEmployee = employeeRepository.save(employee);
 
-        EmployeeDto savedEmployeeDto = new EmployeeDto(
-                saveDEmployee.getId(),
-                saveDEmployee.getFirstName(),
-                saveDEmployee.getLastName(),
-                saveDEmployee.getEmail(),
-                saveDEmployee.getDepartmentCode()
-        );
-
-        return savedEmployeeDto;
+        return modelMapper.map(saveDEmployee, EmployeeDto.class);
     }
 
 //    @CircuitBreaker(name="${spring.application.name}", fallbackMethod = "getDefaultDepartment")
@@ -69,13 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 //        DepartmentDto departmentDto = apiClient.getDepartment(employee.getDepartmentCode());
 
-        EmployeeDto employeeDto = new EmployeeDto(
-                employee.getId(),
-                employee.getFirstName(),
-                employee.getLastName(),
-                employee.getEmail(),
-                employee.getDepartmentCode()
-        );
+        EmployeeDto employeeDto = modelMapper.map(employee, EmployeeDto.class);
 
         APIResponseDto apiResponseDto = new APIResponseDto();
         apiResponseDto.setEmployee(employeeDto);
@@ -88,14 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = employeeRepository.findById(employeeId).get();
 
-        EmployeeDto employeeDto = new EmployeeDto(
-                employee.getId(),
-                employee.getFirstName(),
-                employee.getLastName(),
-                employee.getEmail(),
-                employee.getDepartmentCode()
-        );
-
+        EmployeeDto employeeDto = modelMapper.map(employee, EmployeeDto.class);
         DepartmentDto departmentDto = new DepartmentDto(
             12L, "default department name", "default department code", "default department description"
         );

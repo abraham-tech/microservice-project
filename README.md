@@ -204,6 +204,12 @@ Contributions are welcome! Please follow these steps:
 1. Fork the Repository
 2. Create a New Branch
 
+## Start Rabbitmq server 
+``` bash
+docker pull rabbitmq:3.11.0
+docker run --rm -it -p 5672:5672 rabbitmq:3.11.0
+```
+
 Please ensure your code follows the project's coding standards and includes relevant tests.
 
 ## License

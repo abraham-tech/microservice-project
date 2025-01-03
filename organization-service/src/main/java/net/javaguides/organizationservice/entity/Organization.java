@@ -9,13 +9,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "organizations")
 public class Organization {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,5 +26,5 @@ public class Organization {
     @Column(nullable = false, unique = true)
     private String organizationCode;
     @CreationTimestamp
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 }

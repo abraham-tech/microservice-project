@@ -1,30 +1,31 @@
 package net.javaguides.organizationservice.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import net.javaguides.organizationservice.dto.OrganizationDto;
-import net.javaguides.organizationservice.entity.Organization;
 import net.javaguides.organizationservice.service.OrganizationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/organizations")
 @AllArgsConstructor
-//@NoArgsConstructor
 public class OrganizationController {
+
     private OrganizationService organizationService;
 
-//    public OrganizationController(OrganizationService organizationService) {
-//        this.organizationService = organizationService;
-//    }
-
+    // Build Save Organization REST API
     @PostMapping
-    public ResponseEntity<OrganizationDto> createOrganization(@RequestBody OrganizationDto organizationDto) {
+    public ResponseEntity<OrganizationDto> saveOrganization(@RequestBody OrganizationDto organizationDto){
         OrganizationDto savedOrganization = organizationService.saveOrganization(organizationDto);
-        return ResponseEntity.ok().body(savedOrganization);
+        return new ResponseEntity<>(savedOrganization, HttpStatus.CREATED);
     }
+
+    // Build Get Organization by Code REST API
+    @GetMapping("{code}")
+    public ResponseEntity<OrganizationDto> getOrganization(@PathVariable("code") String organizationCode){
+        OrganizationDto organizationDto = organizationService.getOrganizationByCode(organizationCode);
+        return ResponseEntity.ok(organizationDto);
+    }
+
 }

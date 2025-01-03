@@ -209,6 +209,10 @@ Contributions are welcome! Please follow these steps:
 docker pull rabbitmq:3.11.0
 docker run --rm -it -p 5672:5672 rabbitmq:3.11.0
 ```
+## Start zipkin server
+``` bash
+java -jar zipkin-server-2.23.19-exec.jar
+```
 
 Please ensure your code follows the project's coding standards and includes relevant tests.
 

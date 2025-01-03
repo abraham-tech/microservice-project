@@ -13,7 +13,7 @@ public class MessageController {
     private String message;
 
     @GetMapping("/users/message")
-    public String getMessage() {
+    public String message(){
         return message;
     }
 }

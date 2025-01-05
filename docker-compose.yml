@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  config-server:
+    build:
+      context: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - spring-network
+
+  # service-registry:
+  #   build:
+  #     context: ./service-registry
+  #   container_name: service-registry
+  #   ports:
+  #     - "8761:8761"
+  #   depends_on:
+  #     - config-server
+  #   networks:
+  #     - spring-network
+
+  # api-gateway:
+  #   build:
+  #     context: ./api-gateway
+  #   container_name: api-gateway
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - service-registry
+  #     - config-server
+  #     - department-service
+  #     - employee-service
+  #   networks:
+  #     - spring-network
+
+  # department-service:
+  #   build:
+  #     context: ./department-service
+  #   container_name: department-service
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     - service-registry
+  #     - config-server
+  #   networks:
+  #     - spring-network
+
+  # employee-service:
+  #   build:
+  #     context: ./employee-service
+  #   container_name: employee-service
+  #   ports:
+  #     - "8082:8082"
+  #   depends_on:
+  #     - service-registry
+  #     - config-server
+  #   networks:
+  #     - spring-network
+
+networks:
+  spring-network:
+    driver: bridge

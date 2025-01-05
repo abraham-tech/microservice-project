@@ -1,0 +1,163 @@
+services:
+  config-server:
+    build:
+      context: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    depends_on:
+      - service-registry
+      - mysql
+      - rabbitmq
+    networks:
+      - spring-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+
+  service-registry:
+    build:
+      context: ./service-registry
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    depends_on:
+      - mysql
+      - rabbitmq
+    networks:
+      - spring-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "9191:9191"
+    depends_on:
+      - service-registry
+      - department-service
+      - employee-service
+      - mysql
+      - rabbitmq
+    networks:
+      - spring-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - SERVICE_REGISTRY_URI=http://service-registry:8761
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+
+  department-service:
+    build:
+      context: ./department-service
+    container_name: department-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service-registry
+      - config-server
+      - mysql
+      - rabbitmq
+    networks:
+      - spring-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - SERVICE_REGISTRY_URI=http://service-registry:8761
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+
+  employee-service:
+    build:
+      context: ./employee-service
+    container_name: employee-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - service-registry
+      - config-server
+      - mysql
+      - rabbitmq
+    networks:
+      - spring-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - SERVICE_REGISTRY_URI=http://service-registry:8761
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+
+  organization-service:
+    build:
+      context: ./organization-service
+    container_name: organization-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - service-registry
+      - config-server
+      - mysql
+      - rabbitmq
+    networks:
+      - spring-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - SERVICE_REGISTRY_URI=http://service-registry:8761
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: springdb
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: springpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - spring-network
+
+  rabbitmq:
+    image: rabbitmq:3.11.0
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - spring-network
+
+volumes:
+  mysql-data:
+  rabbitmq-data:
+
+networks:
+  spring-network:
+    driver: bridge

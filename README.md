@@ -47,8 +47,7 @@ The project follows a microservices architecture, where each service is responsi
 - **Java JDK 17** or higher
 - **Maven 3.6+**
 - **Git**
-- **Docker** (optional, for containerization)
-
+- **Docker** 
 ### Steps
 
 1. **Clone the Repository**

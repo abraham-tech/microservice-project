@@ -1,5 +1,3 @@
-# microservice-project
-
 # Spring Book Microservice Project
 
 ## Table of Contents
